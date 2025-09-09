@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from exceptions import exception_handlers
 
-from models.SegmentationUNET import model
+from models.SegmentationUNET import SegmentationModel
 # TODO: error hangling with model
 
 model = None

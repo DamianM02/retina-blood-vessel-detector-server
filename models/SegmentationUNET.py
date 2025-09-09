@@ -1,20 +1,23 @@
 import segmentation_models_pytorch as smp
-import os
 import torch
-from fastapi import HTTPException
+import os
 
 
 class SegmentationModel:
-    def __init__(self, state_dict_path:):
+    def __init__(self, state_dict_path: str):
+        self._model = model = smp.Unet(
+            encoder_name="resnet34",
+            in_channels=3,
+            classes=1,
+            activation="sigmoid"
+        )
+        self.state_dict_path = state_dict_path
+        self._model.load_state_dict(torch.load(self.state_dict_path))
+
+    def __call__(self, X):
+        return self._model(X)
 
 
-
-model = smp.Unet(
-    encoder_name="resnet34",
-    in_channels=3,
-    classes=1,
-    activation="sigmoid"
-)
 
 # try:
 #     state_dict_filename = os.path.join("..","resultsss", "unet_results", "model_weights_scheduler_Jaccard_no_crop.pth")

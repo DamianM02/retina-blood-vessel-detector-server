@@ -4,12 +4,13 @@
 # PROTOTYP
 
 
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Query
 from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import io
 from PIL import Image
+from typing import Annotated
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
@@ -38,7 +39,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins = origins,
     allow_credentials = True,
-    allow_methods = ["POST"],
+    allow_methods = ["POST", "GET"],
     allow_headers = ["Content-Type"]
 )
 
@@ -48,9 +49,11 @@ app.add_middleware(
 
 
 @app.post("/upload")
-async def upload(file: UploadFile = File(...)):
+async def upload(file: Annotated[UploadFile, File()]):
+# async def upload(file: UploadFile = File(...)):
     content = await file.read()
     content = Image.open(io.BytesIO(content))
+    print(type(content))
 
     unet = smp.Unet(
         encoder_name="resnet34",
@@ -69,10 +72,11 @@ async def upload(file: UploadFile = File(...)):
             lambda t: t.repeat(3, 1, 1) if t.shape[0] == 1 else t  # jeśli grayscale → 3 kanały
         ),
         transforms.Lambda(lambda t: t.unsqueeze(0)),
-        unet
+        unet,
+        transforms.Lambda( lambda t: t.squeeze())
     ])
     content = image_transform(content)
-    content = content.squeeze()
+    # content = content.squeeze()
     #
     # plt.gray()
     # plt.imshow(content.detach())
@@ -85,3 +89,8 @@ async def upload(file: UploadFile = File(...)):
 
 
     return StreamingResponse(buf, media_type="image/png")
+
+
+@app.get("/")
+def f(q : Annotated[str | None | int, Query( max_length=2)]):
+    return "siema"

@@ -5,7 +5,7 @@ import os
 
 class SegmentationModel:
     def __init__(self, state_dict_path: str):
-        self._model = model = smp.Unet(
+        self._model = smp.Unet(
             encoder_name="resnet34",
             in_channels=3,
             classes=1,

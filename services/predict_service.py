@@ -3,7 +3,12 @@ from repositories.model_repository import ModelRepository
 import torch
 import torchvision.transforms.v2 as transforms
 from PIL import Image
+import time
+import logging
 
+from exceptions.exceptions import ValidationException
+
+logger = logging.getLogger(name="app."+__name__)
 
 class PredictService:
     def __init__(self, repo: ModelRepository, unet_size:int):
@@ -13,6 +18,7 @@ class PredictService:
 
 
     def transform(self, image: Image.Image) -> Image.Image:
+
 
         pipeline = transforms.Compose([
             transforms.ToImage(),
@@ -27,7 +33,13 @@ class PredictService:
             transforms.ToPILImage()
         ])
 
-        return pipeline(image)
+        start = time.perf_counter()
+        transformed_image = pipeline(image)
+        end = time.perf_counter()
+
+        logger.info(msg=f"Time to predict {end-start:.3f} seconds.")
+
+        return transformed_image
 
 
 

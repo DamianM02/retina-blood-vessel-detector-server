@@ -1,6 +1,6 @@
 
 
-from core.logger import set_logger
+from core.logger import setup_logger
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,7 +11,7 @@ from other.swagger_dark_theme import DarkThemeRouter
 
 from controllers import inference_controller
 
-from core.settings import settings
+from core.settings import init_settings, get_settings
 from exceptions.exception_handlers import register_exception_handlers
 
 
@@ -21,7 +21,10 @@ from repositories.settings_json_repository import SettingsJSONRepository
 # settings_json_repo = SettingsJSONRepository()
 # settings_json_repo.load("settings.json")
 
-set_logger()
+setup_logger()
+init_settings()
+settings = get_settings()
+
 
 app = FastAPI(docs_url=None, # must be docs_url = None, cause im using fastapi stagger dark theme
               lifespan=lambda app: lifespan(app, settings.state_dict_path)

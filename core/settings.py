@@ -2,9 +2,11 @@ import os
 import logging
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
 from exceptions.exceptions import NotFoundException
 
-env_file = ".env"
+logger = logging.getLogger("app."+__name__)
+
 
 class Middleware(BaseModel):
     allow_origins : list[str]
@@ -23,23 +25,31 @@ class Settings(BaseSettings):
     console_debug : bool = True
 
     model_config = SettingsConfigDict(
-        env_file=env_file,
+        env_file=".env",
         extra="allow",
         env_nested_delimiter="__",
         validate_default=False
     )
 
 
-logger = logging.getLogger("app."+__name__)
+
+settings : Settings | None = None
+
+def get_settings() -> Settings: # Lepiej zrobić taki getter czy zostawić tak jak w kazdej innej czesci projektu, czyli zwykły import zmiennej settings?
+    if settings:
+        return settings
+    else:
+        logger.warning("Settings are not initialized.")
+        raise NotFoundException()
 
 
-
-if not os.path.exists(env_file):
-    logger.info("Not found env file.")
-    raise NotFoundException(message=f"{env_file} does not exist")
-else:
-    settings = Settings()
-    logger.info("Settings load succesfully")
+def init_settings():
+    if not os.path.exists(".env"):
+        logger.info("Not found env file.")
+    else:
+        global settings # Czy tak mogę?
+        settings = Settings()
+        logger.info("Settings load succesfully.")
 
 
 

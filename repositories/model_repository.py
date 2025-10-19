@@ -1,17 +1,33 @@
 import torch
+import logging
 import segmentation_models_pytorch as smp
 
+from exceptions.exceptions import NotFoundException, ValidationException
+
+logger = logging.getLogger("app."+ __name__)
 
 class ModelRepository:
     def __init__(self):
-        self._model = smp.Unet(
-            encoder_name="resnet34",
-            in_channels=3,
-            classes=1,
-            activation="sigmoid"
-        )
+        try:
+
+            self._model = smp.Unet(
+                encoder_name="resnet34",
+                in_channels=3,
+                classes=1,
+                activation="sigmoid"
+            )
+            1 / 0
+        except Exception as e:
+            logger.warning(msg="Initializing model error: " + str(e))
+            # raise ValidationException()
+
+
     def load_state_dict_from_path(self, path: str):
-        self._model.load_state_dict(torch.load(path))
+        try:
+            self._model.load_state_dict(torch.load(path))
+        except Exception as e:
+            logger.warning(msg="Loading state dict error: " + str(e))
+            raise NotFoundException()
 
     @property
     def model(self):

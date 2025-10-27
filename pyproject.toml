@@ -1,17 +1,18 @@
 [project]
-name = "retina-blood-vessel-detector-server"
+name = "rbvd-server"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 dependencies = [
-    "fastapi[standard]>=0.118.3",
+    "dotenv>=0.9.9",
+    "fastapi>=0.120.1",
     "fastapi-swagger-dark>=0.0.7",
-    "pillow>=11.3.0",
     "pydantic-settings>=2.11.0",
     "python-json-logger>=4.0.0",
     "python-multipart>=0.0.20",
     "segmentation-models-pytorch>=0.5.0",
-    "torch>=2.8.0",
-    "torchvision>=0.23.0",
+    "torch>=2.9.0",
+    "torchvision>=0.24.0",
+    "uvicorn>=0.38.0",
 ]

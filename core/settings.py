@@ -2,8 +2,9 @@ import os
 import logging
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from exceptions.exceptions import NotFoundException
 
-
+env_file = ".env"
 
 class Middleware(BaseModel):
     allow_origins : list[str]
@@ -22,7 +23,7 @@ class Settings(BaseSettings):
     console_debug : bool = True
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=env_file,
         extra="allow",
         env_nested_delimiter="__",
         validate_default=False
@@ -30,11 +31,16 @@ class Settings(BaseSettings):
 
 
 logger = logging.getLogger("app."+__name__)
-logger.info("cos")
-env_file = ".env"
+
+
+
 if not os.path.exists(env_file):
     logger.info("Not found env file.")
+    raise NotFoundException(message=f"{env_file} does not exist")
+else:
+    settings = Settings()
+    logger.info("Settings load succesfully")
 
-settings = Settings()
+
 
 

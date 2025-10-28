@@ -8,12 +8,14 @@ import logging
 
 from app.exception.exceptions import ValidationException
 
+
+
 logger = logging.getLogger(name="app."+__name__)
 
 class PredictService:
     def __init__(self, repo: ModelRepository, unet_size:int):
         self.model_repository = repo
-        self.unet_size = unet_size #lepiej tylko tak, czy wprowadzić od razu całe repozytorium settingsowe?
+        self.unet_size = unet_size
 
 
 
@@ -44,7 +46,4 @@ class PredictService:
         except Exception as e:
             logger.warning(msg="Predicting error: " + str(e))
             raise ValidationException()
-
-
-
 

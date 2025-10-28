@@ -12,7 +12,6 @@ logger = logging.getLogger("app."+__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI, state_dict_path):
     logger.info("Server starting...")
-    global model_repo # Czy tak mogę?
     model_repo = ModelRepository()
     model_repo.load_state_dict_from_path(state_dict_path)
     logger.info("Server started succesfully.")

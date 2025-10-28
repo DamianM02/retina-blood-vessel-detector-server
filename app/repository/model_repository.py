@@ -2,7 +2,7 @@ import torch
 import logging
 import segmentation_models_pytorch as smp
 
-from app.exception.exceptions import NotFoundException
+from app.exception.exceptions import NotFoundException, ModelInitializationException
 from app.utils.singleton import singleton
 
 logger = logging.getLogger("app."+ __name__)
@@ -20,7 +20,7 @@ class ModelRepository:
             )
         except Exception as e:
             logger.warning(msg="Initializing model error: " + str(e))
-            # raise ValidationException()
+            raise ModelInitializationException()
 
 
     def load_state_dict_from_path(self, path: str):

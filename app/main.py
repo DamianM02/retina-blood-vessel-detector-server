@@ -15,12 +15,6 @@ from app.core.settings import Settings, init_settings
 from app.exception.exception_handlers import register_exception_handlers
 
 
-
-# from repositories.settings_json_repository import SettingsJSONRepository
-# I decided to only one time load json with settings
-# settings_json_repo = SettingsJSONRepository()
-# settings_json_repo.load("settings.json")
-
 setup_logger()
 
 init_settings() # Wsm do zastanowienia się czy nie można tego zrobić lepiej

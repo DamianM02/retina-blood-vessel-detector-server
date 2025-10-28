@@ -5,21 +5,20 @@ import io
 import logging
 from PIL import Image
 
-from services.predict_service import PredictService
-from repositories.model_repository import ModelRepository
-from core.lifespan import get_model_repo
+from app.service.predict_service import PredictService
+from app.repository.model_repository import ModelRepository
 
-from core.settings import settings
-
-from exceptions.exceptions import ValidationException
+from app.core.settings import Settings
 
 
+logger = logging.getLogger("app."+__name__)
+settings = Settings()
 
 router = APIRouter()
-logger = logging.getLogger("app."+__name__)
+
 
 @router.post("/inference")
-async def inference(file: Annotated[UploadFile, File], model_repo : Annotated[ModelRepository,  Depends(get_model_repo)]):
+async def inference(file: Annotated[UploadFile, File], model_repo : Annotated[ModelRepository,  Depends(lambda : ModelRepository())]):
     logger.info("Ask from server on post(\"/inference\") in processing...")
 
     predict_service = PredictService(model_repo, settings.unet_size)

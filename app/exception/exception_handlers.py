@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 import fastapi
 from fastapi import status
 
-from exceptions.exceptions import AppException
+from app.exception.exceptions import AppException
 
 logger = logging.getLogger("app." + __name__)
 

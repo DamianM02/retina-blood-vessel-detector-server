@@ -2,10 +2,12 @@ import torch
 import logging
 import segmentation_models_pytorch as smp
 
-from exceptions.exceptions import NotFoundException, ValidationException
+from app.exception.exceptions import NotFoundException
+from app.utils.singleton import singleton
 
 logger = logging.getLogger("app."+ __name__)
 
+@singleton
 class ModelRepository:
     def __init__(self):
         try:
@@ -16,7 +18,6 @@ class ModelRepository:
                 classes=1,
                 activation="sigmoid"
             )
-            1 / 0
         except Exception as e:
             logger.warning(msg="Initializing model error: " + str(e))
             # raise ValidationException()

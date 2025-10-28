@@ -1,4 +1,4 @@
-from repositories.model_repository import ModelRepository
+from app.repository.model_repository import ModelRepository
 
 import torch
 import torchvision.transforms.v2 as transforms
@@ -6,7 +6,7 @@ from PIL import Image
 import time
 import logging
 
-from exceptions.exceptions import ValidationException
+from app.exception.exceptions import ValidationException
 
 logger = logging.getLogger(name="app."+__name__)
 

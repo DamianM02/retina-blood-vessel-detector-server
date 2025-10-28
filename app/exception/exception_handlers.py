@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 import fastapi
 from fastapi import status
 
-from exceptions.exceptions import AppException
+from app.exception.exceptions import AppException
 
 logger = logging.getLogger("app." + __name__)
 
@@ -39,9 +39,3 @@ def register_exception_handlers(app: fastapi.applications.FastAPI):
     app.add_exception_handler(AppException, app_exception_handler)
     app.add_exception_handler(Exception, generic_exception_handler)
 
-
-# def file_not_found_handler(request: Request, exc: FileNotFoundError) -> JSONResponse:
-#     return JSONResponse(
-#         status_code=404,
-#         content={"error": "file not exist", "message": str(exc)}
-#     )

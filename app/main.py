@@ -1,27 +1,28 @@
 
 
-from core.logger import set_logger
+from app.core.logger import setup_logger
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 
-from core.lifespan import lifespan
-from other.swagger_dark_theme import DarkThemeRouter
+from app.core.lifespan import lifespan
+from app.other.swagger_dark_theme import DarkThemeRouter
 
-from controllers import inference_controller
+from app.controller import inference_controller
 
-from core.settings import settings
-from exceptions.exception_handlers import register_exception_handlers
+from app.core.settings import Settings, init_settings
+from app.exception.exception_handlers import register_exception_handlers
+
+
+setup_logger()
+
+init_settings() # Wsm do zastanowienia się czy nie można tego zrobić lepiej
+
+settings = Settings()
 
 
 
-from repositories.settings_json_repository import SettingsJSONRepository
-# I decided to only one time load json with settings
-# settings_json_repo = SettingsJSONRepository()
-# settings_json_repo.load("settings.json")
-
-set_logger()
 
 app = FastAPI(docs_url=None, # must be docs_url = None, cause im using fastapi stagger dark theme
               lifespan=lambda app: lifespan(app, settings.state_dict_path)

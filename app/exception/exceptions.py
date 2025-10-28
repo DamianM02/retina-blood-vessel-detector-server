@@ -17,3 +17,6 @@ class ValidationException(AppException):
     def __init__(self, message : str = "Validation error"):
         super().__init__(message=message, code="VALIDATION_ERROR", status_code=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
+class ModelInitializationException(AppException):
+    def __init__(self, message : str = "Model initialization error"):
+        super().__init__(message=message, code="MODEL_INITIALIZATION_ERROR", status_code=status.HTTP_404_NOT_FOUND)

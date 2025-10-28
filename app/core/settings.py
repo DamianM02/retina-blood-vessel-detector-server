@@ -31,7 +31,7 @@ class Settings(BaseSettings):
 
 def init_settings():
     if not os.path.exists(".env"):
-        logger.info("Not found .env file.")
+        logger.warning("Not found .env file.")
     else:
         Settings()
         logger.info("Settings load succesfully.")

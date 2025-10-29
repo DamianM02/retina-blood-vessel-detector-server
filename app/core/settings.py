@@ -4,7 +4,8 @@ from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from app.utils.singleton import singleton
 
-logger = logging.getLogger("app."+__name__)
+logger = logging.getLogger("app." + __name__)
+
 
 @singleton
 class Settings(BaseSettings):
@@ -26,8 +27,9 @@ class Settings(BaseSettings):
         env_file=".env",
         extra="allow",
         env_nested_delimiter="__",
-        validate_default=False
+        validate_default=False,
     )
+
 
 def init_settings():
     if not os.path.exists(".env"):
@@ -35,4 +37,3 @@ def init_settings():
     else:
         Settings()
         logger.info("Settings load succesfully.")
-

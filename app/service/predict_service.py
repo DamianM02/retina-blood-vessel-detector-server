@@ -9,41 +9,41 @@ import logging
 from app.exception.exceptions import ValidationException
 
 
+logger = logging.getLogger(name="app." + __name__)
 
-logger = logging.getLogger(name="app."+__name__)
 
 class PredictService:
-    def __init__(self, repo: ModelRepository, unet_size:int):
+    def __init__(self, repo: ModelRepository, unet_size: int):
         self.model_repository = repo
         self.unet_size = unet_size
 
-
-
     def transform(self, image: Image.Image) -> Image.Image:
-
         try:
-            pipeline = transforms.Compose([
-                transforms.ToImage(),
-                transforms.ToDtype(torch.float32, scale=True),
-                transforms.Resize(self.unet_size),
-                transforms.Lambda(
-                    lambda t: t.repeat(3, 1, 1) if t.shape[0] == 1 else t  # jeśli grayscale → 3 kanały
-                ),
-                transforms.Lambda(lambda t: t.unsqueeze(0)),
-                self.model_repository.model,
-                transforms.Lambda(lambda t: t.squeeze()),
-                transforms.ToPILImage()
-            ])
+            pipeline = transforms.Compose(
+                [
+                    transforms.ToImage(),
+                    transforms.ToDtype(torch.float32, scale=True),
+                    transforms.Resize(self.unet_size),
+                    transforms.Lambda(
+                        lambda t: t.repeat(3, 1, 1)
+                        if t.shape[0] == 1
+                        else t  # jeśli grayscale → 3 kanały
+                    ),
+                    transforms.Lambda(lambda t: t.unsqueeze(0)),
+                    self.model_repository.model,
+                    transforms.Lambda(lambda t: t.squeeze()),
+                    transforms.ToPILImage(),
+                ]
+            )
 
             start = time.perf_counter()
             transformed_image = pipeline(image)
             end = time.perf_counter()
 
-            logger.info(msg=f"Time to predict {end-start:.3f} seconds.")
+            logger.info(msg=f"Time to predict {end - start:.3f} seconds.")
 
             return transformed_image
 
         except Exception as e:
             logger.warning(msg="Predicting error: " + str(e))
             raise ValidationException()
-

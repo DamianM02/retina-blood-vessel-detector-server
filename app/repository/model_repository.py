@@ -5,23 +5,19 @@ import segmentation_models_pytorch as smp
 from app.exception.exceptions import NotFoundException, ModelInitializationException
 from app.utils.singleton import singleton
 
-logger = logging.getLogger("app."+ __name__)
+logger = logging.getLogger("app." + __name__)
+
 
 @singleton
 class ModelRepository:
     def __init__(self):
         try:
-
             self._model = smp.Unet(
-                encoder_name="resnet34",
-                in_channels=3,
-                classes=1,
-                activation="sigmoid"
+                encoder_name="resnet34", in_channels=3, classes=1, activation="sigmoid"
             )
         except Exception as e:
             logger.warning(msg="Initializing model error: " + str(e))
             raise ModelInitializationException()
-
 
     def load_state_dict_from_path(self, path: str):
         try:

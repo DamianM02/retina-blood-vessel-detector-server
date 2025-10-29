@@ -1,22 +1,17 @@
 import segmentation_models_pytorch as smp
 import torch
-import os
 
 
 class SegmentationModel:
     def __init__(self, state_dict_path: str):
         self._model = smp.Unet(
-            encoder_name="resnet34",
-            in_channels=3,
-            classes=1,
-            activation="sigmoid"
+            encoder_name="resnet34", in_channels=3, classes=1, activation="sigmoid"
         )
         self.state_dict_path = state_dict_path
         self._model.load_state_dict(torch.load(self.state_dict_path))
 
     def __call__(self, X):
         return self._model(X)
-
 
 
 # try:

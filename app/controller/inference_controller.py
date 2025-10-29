@@ -11,15 +11,18 @@ from app.repository.model_repository import ModelRepository
 from app.core.settings import Settings
 
 
-logger = logging.getLogger("app."+__name__)
+logger = logging.getLogger("app." + __name__)
 settings = Settings()
 
 router = APIRouter()
 
 
 @router.post("/inference")
-async def inference(file: Annotated[UploadFile, File], model_repo : Annotated[ModelRepository,  Depends(lambda : ModelRepository())]):
-    logger.info("Ask from server on post(\"/inference\") in processing...")
+async def inference(
+    file: Annotated[UploadFile, File],
+    model_repo: Annotated[ModelRepository, Depends(lambda: ModelRepository())],
+):
+    logger.info('Ask from server on post("/inference") in processing...')
 
     predict_service = PredictService(model_repo, settings.unet_size)
 
@@ -29,5 +32,5 @@ async def inference(file: Annotated[UploadFile, File], model_repo : Annotated[Mo
     buf = io.BytesIO()
     transformed_content.save(buf, format="PNG")
     buf.seek(0)
-    logger.info("Ask from server on post(\"/inference\") ended.")
+    logger.info('Ask from server on post("/inference") ended.')
     return StreamingResponse(status_code=200, content=buf, media_type="image/png")

@@ -229,3 +229,6 @@ logs/
 
 */__pycache__/
 *.pyc
+
+
+RBVD_server.py

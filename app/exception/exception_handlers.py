@@ -14,11 +14,7 @@ async def app_exception_handler(request: Request, exc: AppException) -> JSONResp
     logger.warning(f"AppException: {exc.code} - {exc.message} - {request.url.path}")
     return JSONResponse(
         status_code=exc.status_code,
-        content={
-            "error": exc.code,
-            "details": exc.message,
-            "path": request.url.path
-        }
+        content={"error": exc.code, "details": exc.message, "path": request.url.path},
     )
 
 
@@ -29,13 +25,11 @@ async def generic_exception_handler(request: Request, exc: Exception) -> JSONRes
         content={
             "error": "Internal Server Error",
             "details": str(exc),
-            "path": request.url.path
-        }
-
+            "path": request.url.path,
+        },
     )
 
 
 def register_exception_handlers(app: fastapi.applications.FastAPI):
     app.add_exception_handler(AppException, app_exception_handler)
     app.add_exception_handler(Exception, generic_exception_handler)
-

@@ -11,8 +11,6 @@ import os
 import io
 from PIL import Image
 from typing import Annotated
-import matplotlib.pyplot as plt
-import numpy as np
 import torch
 import torchvision.transforms.v2 as transforms
 import segmentation_models_pytorch as smp

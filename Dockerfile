@@ -22,11 +22,11 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Installing project
 
-COPY app /app
+COPY . /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
 
-
+RUN chown -R nonroot:nonroot /app
 
 ENV PATH="/app/.venv/bin:$PATH"
 

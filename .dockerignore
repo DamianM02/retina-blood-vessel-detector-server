@@ -32,3 +32,15 @@
 **/values.dev.yaml
 LICENSE
 README.md
+
+
+.ruff_cache/
+app/__pycache__/
+**/*.pyc
+.idea
+.env.example
+app.log
+logs
+**scratch**
+Makefile
+.python-version

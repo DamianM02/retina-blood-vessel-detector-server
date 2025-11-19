@@ -11,8 +11,19 @@ services:
   server:
     build:
       context: .
+      dockerfile: Dockerfile
     ports:
-      - 8080:8080
+      - 8000:8000
+    image: xd
+    container_name: app
+    env_file:
+        - .env
+    user: "999:999"
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /app/app
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

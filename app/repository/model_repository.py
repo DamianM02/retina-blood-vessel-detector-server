@@ -13,7 +13,11 @@ class ModelRepository:
     def __init__(self):
         try:
             self._model = smp.Unet(
-                encoder_name="resnet34", in_channels=3, classes=1, activation="sigmoid"
+                encoder_name="resnet34",
+                encoder_weights=None,
+                in_channels=3,
+                classes=1,
+                activation="sigmoid"
             )
         except Exception as e:
             logger.warning(msg="Initializing model error: " + str(e))

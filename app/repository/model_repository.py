@@ -17,7 +17,7 @@ class ModelRepository:
                 encoder_weights=None,
                 in_channels=3,
                 classes=1,
-                activation="sigmoid"
+                activation="sigmoid",
             )
         except Exception as e:
             logger.warning(msg="Initializing model error: " + str(e))

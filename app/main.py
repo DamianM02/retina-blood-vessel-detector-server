@@ -12,13 +12,14 @@ from app.core.settings import Settings
 from app.exception.exception_handlers import register_exception_handlers
 
 setup_logger()
+settings = Settings()
 
 app = FastAPI(
     docs_url=None,  # must be docs_url = None, cause im using fastapi stagger dark theme
     lifespan=lambda app: lifespan(app, settings.state_dict_path),
 )
 
-settings = Settings()
+
 # Dark Theme for Swagger
 DarkThemeRouter(app).make_dark_theme()
 

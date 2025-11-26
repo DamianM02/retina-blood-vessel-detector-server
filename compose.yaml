@@ -1,0 +1,16 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    container_name: RBVD-server
+    env_file:
+        - .env
+    user: "999:999"
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /app/app

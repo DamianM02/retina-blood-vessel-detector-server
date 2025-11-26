@@ -1,8 +1,8 @@
-import os
 import logging
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from app.utils.singleton import singleton
+
 
 logger = logging.getLogger("app." + __name__)
 
@@ -24,16 +24,22 @@ class Settings(BaseSettings):
     console_debug: bool = True
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        # env_file=".env",
         extra="allow",
         env_nested_delimiter="__",
         validate_default=False,
     )
 
 
-def init_settings():
-    if not os.path.exists(".env"):
-        logger.warning("Not found .env file.")
-    else:
-        Settings()
-        logger.info("Settings load succesfully.")
+# def init_settings():
+#     try:
+#         Settings()
+#     except Exception as e:
+#         logger.warning(msg = "Initialization of settings failed."+ str(e))
+#         raise SettingsInitializationException()
+#
+#     # if not os.path.exists(".env"):
+#     #     logger.warning("Not found .env file.")
+#     # else:
+#     #     Settings()
+#     #     logger.info("Settings load succesfully.")

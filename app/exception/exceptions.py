@@ -39,3 +39,13 @@ class ModelInitializationException(AppException):
             code="MODEL_INITIALIZATION_ERROR",
             status_code=status.HTTP_404_NOT_FOUND,
         )
+
+
+#
+# class SettingsInitializationException(AppException):
+#     def __init__(self, message: str = "Settings initialization error"):
+#         super().__init__(
+#             message=message,
+#             code="SETTINGS_INITIALIZATION_ERROR",
+#             status_code=status.HTTP_404_NOT_FOUND,
+#         )
